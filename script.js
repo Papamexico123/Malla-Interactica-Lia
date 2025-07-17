@@ -4,7 +4,7 @@ const contenedor = document.getElementById('malla');
 // ===== Datos de la malla =====
 const ramosPorSemestre = [
 
-    1: [
+    1 = [
       { codigo: "ODON A001", nombre: "Introducción a la Odontología", requisitos: [] },
       { codigo: "ODON A002", nombre: "Matemática y Física Aplicada", requisitos: [] },
       { codigo: "DBIO 1070", nombre: "Biología Celular", requisitos: [] },
