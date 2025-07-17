@@ -1,3 +1,6 @@
+const estadoRamos = {};
+const contenedor = document.getElementById('malla');
+
 // ===== Datos de la malla =====
 const ramosPorSemestre = {
   1: [
@@ -93,20 +96,76 @@ const ramosPorSemestre = {
 };
 
 
-const container = document.getElementById("malla-container");
+// Crea todas las columnas por semestre
+function crearColumnas() {
+  for (let semestre = 1; semestre <= 12; semestre++) {
+    const columna = document.createElement('div');
+    columna.className = 'semestre';
+    columna.id = `semestre-${semestre}`;
+    const titulo = document.createElement('h2');
+    titulo.innerText = `Semestre ${semestre}`;
+    columna.appendChild(titulo);
+    contenedor.appendChild(columna);
+  }
+}
 
-for (let semestre = 1; semestre <= 12; semestre++) {
-  const columna = document.createElement("div");
-  columna.className = "semestre";
-  columna.innerHTML = `<h2>Semestre ${semestre}</h2>`;
-  
-  const ramos = ramosPorSemestre[semestre] || [];
-  ramos.forEach(ramo => {
-    const el = document.createElement("div");
-    el.className = "ramo";
-    el.textContent = `${ramo.codigo}: ${ramo.nombre}`;
-    columna.appendChild(el);
+// Crea un bloque visual para cada ramo
+function crearRamo(ramo, semestre) {
+  const div = document.createElement('div');
+  div.className = 'ramo bloqueado';
+  div.id = ramo.codigo;
+  div.innerText = `${ramo.codigo}\n${ramo.nombre}`;
+
+  // Insertar en la columna correspondiente
+  const columna = document.getElementById(`semestre-${semestre}`);
+  columna.appendChild(div);
+
+  estadoRamos[ramo.codigo] = {
+    aprobado: false,
+    elemento: div,
+    requisitos: ramo.requisitos
+  };
+
+  if (ramo.requisitos.length === 0) {
+    desbloquear(ramo.codigo);
+  }
+
+  div.addEventListener('click', () => {
+    if (!div.classList.contains('bloqueado')) {
+      aprobarRamo(ramo.codigo);
+    }
   });
+}
 
-  container.appendChild(columna);
+function desbloquear(codigo) {
+  const ramo = estadoRamos[codigo];
+  if (ramo) {
+    ramo.elemento.classList.remove('bloqueado');
+  }
+}
+
+function aprobarRamo(codigo) {
+  const ramo = estadoRamos[codigo];
+  if (!ramo || ramo.aprobado) return;
+
+  ramo.aprobado = true;
+  ramo.elemento.classList.add('aprobado');
+
+  // Desbloquear los que dependan de este
+  for (const clave in estadoRamos) {
+    const dependiente = estadoRamos[clave];
+    if (
+      !dependiente.aprobado &&
+      dependiente.requisitos.every(req => estadoRamos[req]?.aprobado)
+    ) {
+      desbloquear(clave);
+    }
+  }
+}
+
+// Inicialización
+crearColumnas();
+for (let semestre = 1; semestre <= 12; semestre++) {
+  const ramos = ramosPorSemestre[semestre] || [];
+  ramos.forEach(ramo => crearRamo(ramo, semestre));
 }
