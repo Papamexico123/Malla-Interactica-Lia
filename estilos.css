@@ -1,0 +1,26 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+
+#malla {
+  display: grid;
+  grid-template-columns: repeat(6, 100px);
+  grid-gap: 10px;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.celda {
+  width: 100px;
+  height: 100px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.celda.activa {
+  background-color: #4caf50;
+}
