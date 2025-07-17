@@ -2,8 +2,9 @@ const estadoRamos = {};
 const contenedor = document.getElementById('malla');
 
 // ===== Datos de la malla =====
-const ramosPorSemestre = {
-  1: [
+const ramosPorSemestre = [
+
+    1: [
       { codigo: "ODON A001", nombre: "Introducción a la Odontología", requisitos: [] },
       { codigo: "ODON A002", nombre: "Matemática y Física Aplicada", requisitos: [] },
       { codigo: "DBIO 1070", nombre: "Biología Celular", requisitos: [] },
@@ -93,7 +94,8 @@ const ramosPorSemestre = {
     ],
   12: [
       { codigo: "ODON L001", nombre: "Internado Clínico Asistencial", requisitos: ["ODON J001", "ODON J002", "ODON J003", "ODON J004", "ODON J005", "DSPU 0005"] }
-};
+  ]
+];
 
 
 // Crea todas las columnas por semestre
